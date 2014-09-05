@@ -7,3 +7,12 @@ gradle -q <task name>
 
 GRADLE DONT GARANTEE TASKS ORDER EXECUTION EXCEPT FOR DEPENDS ON
 A TASK IS EXECUTED ONLY ONCE ( IF IT S CALLED ON DEPENDS ON ANOTHER TIME WONT BE EXECUTED )
+
+Gradle build, three distinct lifecycle phases are run: initial-
+ization, configuration, and execution
+
+Keep in mind that any configuration code is executed with every build of your proj-
+ect—even if you just execute gradle tasks.
+
+Gradle determines if a task is up to date by com- Inputs Task Outputs paring a snapshot of a task’s inputs and outputs between two builds,
+

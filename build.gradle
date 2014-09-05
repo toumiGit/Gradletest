@@ -52,7 +52,6 @@ task printVersion {
 task first << {println "first" }
 task prinVersionDepending (dependsOn: [first]) << { logger.quiet( " Version : $version")}
 
-version = new ProjectVersion(0, 1, true)
 
 class ProjectVersion {
     Integer major
@@ -79,21 +78,28 @@ class ProjectVersion {
 task printVersionObject << {
     logger.quiet "Version: $version"
 }
-//sourceSets {                                                      -- pour midifier les chemin par defaut
-//    main {
-//        java {
-//            srcDirs = ['src']
-//        }
-//    }
-//
-//    test {
-//        java {
-//            srcDirs = ['test']
-//        }
-//    }
-//}
-//buildDir = 'out'                                                  -- modifier le build en out directory
-//webAppDirName = 'webfiles'                                        -- default path webapp
-//war {                                                             -- default path static folder
-//    from 'static'
-//}
+
+
+ext.versionFile = file('version.properties')
+task loadVersion {
+    project.version = readVersion();
+}
+ProjectVersion  readVersion()
+{
+    logger.quiet( ' reading the file version ');
+    if ( !versionFile.exists()) { throw new GradleException( " Required version file not exist : $versionFile.canonicalPath" ) }
+    Properties versionProps = new Properties()
+    versionFile.withInputStream { stream -> versionProps.load(stream) }
+    return new ProjectVersion( versionProps.major.toInteger() , versionProps.minor.toInteger() , versionProps.release.toBoolean())
+}
+
+task makeReleaseVersion ( group : 'versionning' , description : 'makes project in release version') {
+            inputs.property('release', version.release)         //inputs. pemet a gradle  de n executer ce code qu en cas de necessite
+            outputs.file versionFile                            // pareil pour output code:
+            doLast {
+                version.release = true
+                ant.propertyfile ( file: versionFile) {
+                            entry ( key : 'release' , type: 'string' ,  operation : '=', value : 'false')
+                        }
+            }
+        }
