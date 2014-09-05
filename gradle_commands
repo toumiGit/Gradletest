@@ -3,3 +3,7 @@ java -cp build/classes/main main.java.business.ToDoApp // avant de preciser le j
 java -jar build/libs/todo-app-0.1.jar
 gradle jettyRun
 gradle wrapper              lancer cette commande pour telecharger la version du projet de gradle
+gradle -q <task name>
+
+GRADLE DONT GARANTEE TASKS ORDER EXECUTION EXCEPT FOR DEPENDS ON
+A TASK IS EXECUTED ONLY ONCE ( IF IT S CALLED ON DEPENDS ON ANOTHER TIME WONT BE EXECUTED )

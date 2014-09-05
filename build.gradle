@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'war'
-version = 0.1
+//version = 0.1
 apply plugin: 'jetty'
 sourceCompatibility = 1.8
 
@@ -31,12 +31,13 @@ dependencies {
 }
 
 
-//assert project.exampleProp == 'myValue'
+assert project.exampleProp == 'myValuetesting'
 task printGradleProperty << {
-println "Second property: $someOtherProp"
+    println "Second property: $someOtherProp"
 }
 
-version = '0.1-SNAPSHOT'
+
+
 task printVersion {
     doFirst{
         println " before reading the project verison"
@@ -46,6 +47,38 @@ task printVersion {
     }
 }
 
+
+
+task first << {println "first" }
+task prinVersionDepending (dependsOn: [first]) << { logger.quiet( " Version : $version")}
+
+version = new ProjectVersion(0, 1, true)
+
+class ProjectVersion {
+    Integer major
+    Integer minor
+    Boolean release
+
+    ProjectVersion(Integer major, Integer minor) {
+        this.major = major
+        this.minor = minor
+        this.release = Boolean.FALSE
+    }
+
+    ProjectVersion(Integer major, Integer minor, Boolean release) {
+        this(major, minor)
+        this.release = release
+    }
+
+    @Override
+    String toString() {
+        "$major.$minor${release ? '' : '-SNAPSHOT'}"
+    }
+}
+
+task printVersionObject << {
+    logger.quiet "Version: $version"
+}
 //sourceSets {                                                      -- pour midifier les chemin par defaut
 //    main {
 //        java {
