@@ -31,7 +31,20 @@ dependencies {
 }
 
 
+//assert project.exampleProp == 'myValue'
+task printGradleProperty << {
+println "Second property: $someOtherProp"
+}
 
+version = '0.1-SNAPSHOT'
+task printVersion {
+    doFirst{
+        println " before reading the project verison"
+    }
+    doLast {
+        println "Version: $version"
+    }
+}
 
 //sourceSets {                                                      -- pour midifier les chemin par defaut
 //    main {
