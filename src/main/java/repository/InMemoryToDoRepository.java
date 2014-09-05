@@ -1,7 +1,7 @@
-package main.java.repository;
+package repository;
 
 
-import main.java.model.ToDoItem;
+import model.ToDoItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

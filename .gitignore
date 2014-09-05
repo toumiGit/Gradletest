@@ -11,3 +11,6 @@ out
 target/
 # Ignore Gradle GUI config
 gradle-app.setting
+gradle/
+gradlew
+gradlew.bat

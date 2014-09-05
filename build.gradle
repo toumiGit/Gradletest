@@ -1,9 +1,53 @@
 apply plugin: 'java'
+apply plugin: 'war'
 version = 0.1
+apply plugin: 'jetty'
 sourceCompatibility = 1.8
+
+jettyRun {
+    httpPort = 9090
+    contextPath = 'todo'
+}
+
+task wrapper(type: Wrapper) {                   //pour eviter incompatibilite de version
+    gradleVersion = '2.0'
+}
+
 
 jar {
     manifest {
         attributes 'Main-Class' : 'main.java.business.ToDoApp'
     }
 }
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
+    providedCompile 'javax.servlet:servlet-api:2.5'                                 //classe besoin pour compil mais fournie en runtime
+    runtime 'javax.servlet:jstl:1.1.2'
+}
+
+
+
+
+//sourceSets {                                                      -- pour midifier les chemin par defaut
+//    main {
+//        java {
+//            srcDirs = ['src']
+//        }
+//    }
+//
+//    test {
+//        java {
+//            srcDirs = ['test']
+//        }
+//    }
+//}
+//buildDir = 'out'                                                  -- modifier le build en out directory
+//webAppDirName = 'webfiles'                                        -- default path webapp
+//war {                                                             -- default path static folder
+//    from 'static'
+//}

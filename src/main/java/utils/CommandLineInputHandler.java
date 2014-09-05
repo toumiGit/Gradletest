@@ -1,8 +1,8 @@
-package main.java.utils;
+package utils;
 
-import main.java.model.ToDoItem;
-import main.java.repository.InMemoryToDoRepository;
-import main.java.repository.ToDoRepository;
+import model.ToDoItem;
+import repository.InMemoryToDoRepository;
+import repository.ToDoRepository;
 
 import java.util.Collection;
 
