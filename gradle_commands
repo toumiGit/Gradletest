@@ -1,0 +1,3 @@
+gradle build
+java -cp build/classes/main main.java.business.ToDoApp // avant de preciser le jar manifest dans gradle.build
+java -jar build/libs/todo-app-0.1.jar
