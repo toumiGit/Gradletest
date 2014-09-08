@@ -121,3 +121,44 @@ class ReleaseVersionTask extends DefaultTask {
                 release = version.release
                 destFile = versionFile
             }
+
+
+task createDistribution(type: Zip, dependsOn: makeReleaseVersion) {
+    from war.outputs.files;
+    from(sourceSets*.allSource) {
+        into 'src'
+    }
+    from(rootDir) {
+        include versionFile.name
+    }
+}
+
+task backupReleaseDistribution(type: Copy) {
+    from createDistribution.outputs.files
+    into "$buildDir/backup"
+}
+
+task release(dependsOn: backupReleaseDistribution) << {
+    logger.quiet 'Releasing the project'
+}
+
+tasks.addRule( "Pattern: increment<Classifier>Version - Increments the project version classifier"){
+    String taskName -> if (taskName.startsWith('increment') && taskName.endsWith('Version')) {
+        task (taskName) << {
+            String classifier = (taskName - 'increment' - 'Version'.toLowerCase())
+            String currentVersion = version.toString()
+            switch (classifier ){
+                case 'major' : ++version.major
+                                break
+                case 'minor' : ++version.minor
+                                break
+                default : throw new GradleException(" invalid Version")
+            }
+            String newVersion = version.toString()
+            logger.info "Incrementing "
+            ant.propertyfile ( file : versionFile) {
+                entry (key : classifier, type: 'int', operation: '+', value: 1)
+            }
+        }
+    }
+}
