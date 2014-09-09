@@ -16,3 +16,6 @@ ect—even if you just execute gradle tasks.
 
 Gradle determines if a task is up to date by com- Inputs Task Outputs paring a snapshot of a task’s inputs and outputs between two builds,
 
+gradle dependencies
+gradle -q printdependencies         pour qfficher le chemin des jar
+gradle :repository:build    -a      rebuild partial without checking other projects
